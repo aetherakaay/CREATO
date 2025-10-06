@@ -1,3 +1,201 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-body{font-family:'Poppins',sans-serif;background-color:#fdf6f8;color:#4a4a4a;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:20px}.container{background-color:#fff;padding:40px;border-radius:20px;box-shadow:0 8px 32px 0 rgba(255,122,122,.25);width:100%;max-width:600px;text-align:center;border:1px solid #fff}h1{font-size:3.5rem;font-weight:700;margin-bottom:15px;background:linear-gradient(135deg,#ff7a7a 0%,#ffb28e 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-fill-color:transparent;text-transform:uppercase;letter-spacing:2px}p{color:#666;margin-bottom:30px;font-size:1.1rem}textarea{width:100%;padding:15px;border-radius:12px;border:1px solid #ddd;font-family:'Poppins',sans-serif;font-size:16px;resize:vertical;background-color:#fffaf8}textarea:focus{outline:none;border-color:#ff7a7a;box-shadow:0 0 0 4px rgba(255,122,122,.3)}button{background:linear-gradient(135deg,#ff7a7a 0%,#ffb28e 100%);color:#fff;border:none;padding:15px 30px;border-radius:12px;font-size:18px;font-weight:600;cursor:pointer;transition:all .3s ease;letter-spacing:1px;box-shadow:0 4px 15px rgba(255,122,122,.4)}button:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(255,122,122,.5)}button:disabled{background:#e0e0e0;cursor:not-allowed;transform:none;box-shadow:none}.loader-container{margin-top:30px}.loader{border:6px solid #fee;border-top:6px solid #ff7a7a;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;margin:0 auto 10px}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.result-container{margin-top:30px;text-align:left;background-color:#fff9f6;border:1px solid #ffe8e0;border-radius:15px;padding:20px}pre{white-space:pre-wrap;word-wrap:break-word;font-family:'Fira Code',monospace;font-size:15px;color:#4a4a4a}.error-container{margin-top:20px;padding:15px;background-color:#fff0f0;border:1px solid #ffcccc;border-radius:10px;color:#d8000c;text-align:left}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+ :root {
+    --primary-color: #007bff; /* Vibrant Blue for 'Bolt' */
+    --accent-color: #ff4500;  /* Orange/Red for 'Lovable' Pop */
+    --background-color: #f4f7fa; /* Light, clean background */
+    --card-background: #ffffff; /* White card background */
+    --text-color: #333;
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-bold: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --font-family: 'Montserrat', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: var(--card-background);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Header & Lovable/Bolt Text */
+header {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.logo {
+    font-size: 2.5em;
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: -1px;
+    margin-bottom: 5px;
+}
+
+.bolt-text {
+    color: var(--accent-color);
+    font-weight: 800;
+}
+
+.tagline {
+    font-size: 1.1em;
+    color: #6c757d;
+}
+
+/* Prompt Area */
+.prompt-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#gamePrompt {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    resize: none;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+#gamePrompt:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2); /* "Lovable" focus glow */
+    outline: none;
+}
+
+/* Button - The "Bolt" Power Element */
+#createButton {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1.2em;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 0 var(--accent-color); /* "Bolt" 3D/pressed look */
+    transform: translateY(0);
+}
+
+#createButton:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 0 var(--accent-color);
+}
+
+#createButton:active {
+    background-color: #0056b3;
+    box-shadow: 0 2px 0 var(--accent-color);
+    transform: translateY(2px);
+}
+
+#createButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: 0 4px 0 #999999;
+    transform: translateY(0);
+}
+
+/* Results Area */
+.results-area {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fafafa;
+    transition: all 0.5s;
+}
+
+.results-area h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.message {
+    font-size: 1.1em;
+    padding: 10px;
+    border-left: 5px solid var(--accent-color);
+    background: #fff3e0;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.output-box {
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+
+.output-box h3 {
+    color: green;
+    margin-bottom: 10px;
+}
+
+#apiResponse {
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #222;
+    color: #00ffaa; /* Hacker-green style for code */
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Bolt Loader/Spinner (Simple CSS Spinner) */
+.loader {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    color: #999;
+    font-size: 0.85em;
+}
