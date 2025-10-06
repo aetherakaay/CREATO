@@ -3,27 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREATON - AI Game Generator</title>
+    <title>CREATON - AI Game Creator</title>
     <link rel="stylesheet" href="style.css">
-</head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+    </head>
 <body>
-    <main class="container">
-        <h1>CREATON</h1>
-        <p>Describe the game you want to create. Your AI agent will design it for you!</p>
-        <div class="form-group">
-            <textarea id="prompt-input" rows="4" placeholder="e.g., A cozy life-sim game about a ghost who runs a tea shop for other spirits..."></textarea>
-        </div>
-        <button id="generate-btn">Create My Game!</button>
-        <div class="loader-container" id="loader" style="display: none;">
-            <div class="loader"></div>
-            <p>Your AI is thinking...</p>
-        </div>
-        <div class="error-container" id="error-container" style="display: none;"></div>
-        <div class="result-container" id="result-container" style="display: none;">
-            <h2>Generated Game Concept:</h2>
-            <pre id="result-output"></pre>
-        </div>
-    </main>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">CREATON<span class="bolt-text">.AI</span></h1>
+            <p class="tagline">Your dream game, in a single prompt.</p>
+        </header>
+
+        <main class="prompt-area">
+            <textarea id="gamePrompt" placeholder="Describe your game here: e.g., 'A 2D pixel-art platformer where a ninja collects coins and avoids fire-breathing dragons.'"></textarea>
+            <button id="createButton">
+                <span class="button-text">Create Game</span>
+                <span class="loader hidden"></span>
+            </button>
+        </main>
+
+        <section id="resultsSection" class="results-area hidden">
+            <h2>Creation Status</h2>
+            <div id="statusMessage" class="message">Waiting for prompt...</div>
+            <div id="gameOutput" class="output-box hidden">
+                <h3>Your Game Code is Ready!</h3>
+                <p>The agent is working. Your game details will appear below. *For a real project, this would often be a link to the game/code.</p>
+                <pre id="apiResponse"></pre>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 CREATON. All rights reserved.</p>
+        </footer>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
