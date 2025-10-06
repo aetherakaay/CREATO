@@ -1,2 +1,81 @@
-const promptInput=document.getElementById("prompt-input"),generateBtn=document.getElementById("generate-btn"),loader=document.getElementById("loader"),resultContainer=document.getElementById("result-container"),resultOutput=document.getElementById("result-output"),errorContainer=document.getElementById("error-container"),N8N_WEBHOOK_URL="https://hhjjjkkjjjjjju.app.n8n.cloud/webhook/Creaton";function displayError(e){errorContainer.textContent=e,errorContainer.style.display="block",resultContainer.style.display="none"}generateBtn.addEventListener("click",async()=>{const e=promptInput.value.trim();if(!e)return void alert("Please enter a game idea prompt!");generateBtn.disabled=!0,loader.style.display="block",resultContainer.style.display="none",errorContainer.style.display="none";try{const t=await fetch(N8N_WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:e})});if(!t.ok)throw new Error(`Network error: The server responded with status ${t.status}.`);const o=await t.json();if(!o||0===Object.keys(o).length||!o.title)throw new Error("The data received from the AI agent was empty or in the wrong format. Please check your n8n 'Code Node' to ensure it's returning the correct JSON structure (e.g., { title: '...', description: '...', code: '...' }).");const n=o.title||"N/A",r=o.description||"N/A",i=o.code||"No code provided.";resultOutput.textContent=`Title: ${n}\n\nDescription: ${r}\n\nCode Snippet:\n${i}`,resultContainer.style.display="block"}catch(e){console.error("An error occurred:",e),displayError(`Error: ${e.message}`)}finally{loader.style.display="none",generateBtn.disabled=!1}});
+document.addEventListener('DOMContentLoaded', () => {
+    const webhookUrl = 'https://hhjjjkkjjjjjju.app.n8n.cloud/webhook/Creaton';
     
+    const createButton = document.getElementById('createButton');
+    const promptInput = document.getElementById('gamePrompt');
+    const statusMessage = document.getElementById('statusMessage');
+    const resultsSection = document.getElementById('resultsSection');
+    const gameOutput = document.getElementById('gameOutput');
+    const apiResponse = document.getElementById('apiResponse');
+    const buttonText = document.querySelector('#createButton .button-text');
+    const loader = document.querySelector('#createButton .loader');
+
+    // Function to update the UI state
+    function setUIState(isLoading, message, responseData = null) {
+        // Button state
+        createButton.disabled = isLoading;
+        buttonText.classList.toggle('hidden', isLoading);
+        loader.classList.toggle('hidden', !isLoading);
+
+        // Results section visibility
+        resultsSection.classList.remove('hidden');
+        
+        // Status message update
+        statusMessage.textContent = message;
+
+        // Output box visibility and content
+        if (responseData) {
+            gameOutput.classList.remove('hidden');
+            apiResponse.textContent = JSON.stringify(responseData, null, 2);
+            statusMessage.style.borderLeftColor = 'green';
+            statusMessage.style.backgroundColor = '#e6ffed'; // Success color
+        } else {
+            gameOutput.classList.add('hidden');
+            statusMessage.style.borderLeftColor = isLoading ? 'var(--primary-color)' : 'var(--accent-color)';
+            statusMessage.style.backgroundColor = isLoading ? '#e0f7ff' : '#fff3e0'; // Loading/Waiting color
+        }
+    }
+
+    // Event listener for the main button
+    createButton.addEventListener('click', async () => {
+        const prompt = promptInput.value.trim();
+
+        if (prompt === '') {
+            setUIState(false, 'Please enter a game creation prompt to continue.', null);
+            return;
+        }
+
+        // 1. Set UI to Loading State (The 'Bolt' starts spinning)
+        setUIState(true, '⚡️ Generating game... Please wait (this may take a moment).', null);
+
+        try {
+            const response = await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Note: Your n8n webhook might require an API Key/Auth header,
+                    // but for a simple public webhook, this is often enough.
+                },
+                body: JSON.stringify({ prompt: prompt, source: 'CREATON-UI' }),
+            });
+
+            const data = await response.json();
+
+            // 2. Handle successful response (The 'Lovable' result appears)
+            if (response.ok) {
+                setUIState(false, '✅ Success! Your game has been generated!', data);
+            } else {
+                // Handle non-200 status codes
+                setUIState(false, `❌ Error: Agent responded with status ${response.status}. Message: ${data.message || 'Unknown error.'}`, null);
+            }
+
+        } catch (error) {
+            // 3. Handle network/fetch errors
+            console.error('Fetch Error:', error);
+            setUIState(false, '⚠️ Network Error. Could not connect to the AI agent. Check your console for details.', null);
+        }
+    });
+
+    // Initial state setup
+    setUIState(false, 'Enter your game prompt and click "Create Game"!', null);
+});
